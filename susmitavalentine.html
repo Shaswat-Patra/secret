@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cinematic Valentine</title>
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    font-family:'Arial Black', sans-serif;
+    overflow:hidden;
+    background:black;
+    color:white;
+    text-align:center;
+}
+
+/* ===== Intro ===== */
+#intro{
+    position:fixed;
+    width:100%;
+    height:100vh;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    animation:fadeOut 3s ease 3s forwards;
+}
+
+#intro h1{
+    font-size:28px;
+    opacity:0;
+    animation:fadeIn 2s ease forwards;
+}
+
+@keyframes fadeIn{
+    to{opacity:1;}
+}
+
+@keyframes fadeOut{
+    to{opacity:0; visibility:hidden;}
+}
+
+/* ===== Main ===== */
+#main{
+    display:none;
+    height:100vh;
+    background:linear-gradient(to bottom right,#ff4e8b,#ff99c8);
+    padding-top:12vh;
+    position:relative;
+}
+
+h1{font-size:23px;}
+
+button{
+    padding:12px 25px;
+    font-size:18px;
+    margin:15px;
+    border:none;
+    border-radius:30px;
+    font-weight:bold;
+}
+
+.yes{background:#00ff99;}
+.no{background:#ff0033;color:white;}
+
+img{
+    width:220px;
+    border-radius:15px;
+    margin-top:10px;
+}
+
+/* ===== Stars Animation ===== */
+.star{
+    position:absolute;
+    color:white;
+    font-size:18px;
+    animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+    from{opacity:0.2;}
+    to{opacity:1;}
+}
+
+/* ===== Confetti ===== */
+.confetti{
+    position:fixed;
+    width:8px;
+    height:8px;
+    top:-10px;
+    animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+    to{transform:translateY(100vh) rotate(360deg);opacity:0;}
+}
+</style>
+</head>
+
+<body onclick="startMusic()">
+
+<audio id="bgMusic" loop>
+<source src="music.mp3" type="audio/mp3">
+</audio>
+
+<!-- Cinematic Intro -->
+<div id="intro">
+<h1>For The Most Beautiful Girl ❤️</h1>
+</div>
+
+<!-- Main Proposal -->
+<div id="main">
+
+<h1 id="question">BHAU, WILL YOU BE MY VALENTINE ? ❤️</h1>
+
+<!-- Single Dynamic GIF Container -->
+<div id="gifContainer">
+    <img id="mainGif" src="https://media.tenor.com/FbAotDPIf7gAAAAi/heart-love.gif">
+</div>
+
+<div>
+<button class="yes" onclick="accept()">YES</button>
+<button class="no" id="noBtn" onclick="reject()">NO</button>
+</div>
+
+</div>
+
+<script>
+
+let noCount=0;
+let musicStarted=false;
+
+/* Show main after intro */
+setTimeout(()=>{
+document.getElementById("main").style.display="block";
+},3000);
+
+function startMusic(){
+if(!musicStarted){
+document.getElementById("bgMusic").play();
+musicStarted=true;
+}
+}
+
+function reject(){
+noCount++;
+const gif=document.getElementById("mainGif");
+const question=document.getElementById("question");
+const noBtn=document.getElementById("noBtn");
+
+if(noCount==1){
+question.innerText="Soch le ache se!";
+gif.src="https://media.tenor.com/z7ZABFfLkn8AAAAj/kh%C3%B3c.gif";
+}
+else if(noCount==2){
+question.innerText="Ek aur baar Soch le ache se!";
+gif.src="https://media.tenor.com/sWXhCC4A2woAAAAj/bubu-bubu-dudu.gif";
+}
+else{
+question.innerText="Manja na! Kitna bhav khaegi 😭";
+gif.src="https://media.tenor.com/Mw5q8hX6NnIAAAAj/bubu-dudu-bubu.gif";
+
+noBtn.onmouseover=noBtn.ontouchstart=function(){
+noBtn.style.position="absolute";
+noBtn.style.top=Math.random()*80+"%";
+noBtn.style.left=Math.random()*80+"%";
+};
+}
+}
+
+function accept(){
+explodeConfetti();
+animateName();
+
+document.getElementById("main").innerHTML=`
+<h1>
+I KNEW YOU LOVE ME ❤️ <br><br>
+Happy Valentine’s Day to the most beautiful woman in my world.
+I can never get tired of loving you, and this valentine’s day is just a milestone of our beautiful journey.
+</h1>
+
+<img src="photo1.jpg">
+<img src="photo2.jpg">
+<img src="photo3.jpg">
+<img src="photo4.jpg">
+<img src="photo5.jpg">
+`;
+}
+
+/* Confetti */
+function explodeConfetti(){
+for(let i=0;i<150;i++){
+let conf=document.createElement("div");
+conf.className="confetti";
+conf.style.left=Math.random()*100+"vw";
+conf.style.backgroundColor="hsl("+Math.random()*360+",100%,50%)";
+document.body.appendChild(conf);
+setTimeout(()=>conf.remove(),3000);
+}
+}
+
+/* Name Animation in Stars */
+function animateName(){
+let name="";  // <-- replace with her name
+for(let i=0;i<name.length;i++){
+let star=document.createElement("div");
+star.className="star";
+star.innerText=name[i];
+star.style.left=(20+i*8)+"%";
+star.style.top="15%";
+document.body.appendChild(star);
+}
+}
+</script>
+
+</body>
+</html>
